@@ -1,22 +1,37 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <title>Zen Surfer</title>
-    <link rel="stylesheet" href="popup.css">
-</head>
-<body>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
     <h1>Zen Surfer</h1>
-    <form id="blockForm">
-        <p>Select sites you want to block completely:</p>
-        <input type="checkbox" name="site" value="instagram"> Instagram<br>
-        <input type="checkbox" name="site" value="facebook"> Facebook<br>
-        <input type="checkbox" name="site" value="twitter"> Twitter<br>
-        <input type="checkbox" name="site" value="youtube"> YouTube<br>
-        <input type="checkbox" name="site" value="reddit"> Reddit<br>
+    <form id="blockForm" class="form">
+      <p>Select sites you want to block completely:</p>
+      <input type="checkbox" name="site" value="instagram" /> Instagram<br />
+      <input type="checkbox" name="site" value="facebook" /> Facebook<br />
+      <input type="checkbox" name="site" value="twitter" /> Twitter<br />
+      <input type="checkbox" name="site" value="youtube" /> YouTube<br />
+      <input type="checkbox" name="site" value="reddit" /> Reddit<br />
+      <br />
+      <label for="redirectionUrl">Set distraction redirection URL:</label>
+      <input type="text" name="redirectionUrl" id="redirectionUrl" required />
+      <br />
+      <button id="blockButton" type="submit">update</button>
+    </form>
 
-        <button type="submit">Block</button>
+    <form action="" id="" class="form">
+      <p>block specific instagram features</p>
+      <input type="checkbox"  value="reels" /> reels<br />
+      <input type="checkbox"  value="explore" /> explore<br />
+      <input type="checkbox"  value="stories" /> stories<br />
+      <input type="checkbox"  value="feed" /> feed<br />
+      <input type="checkbox"  value="suggestFollowers" />suggestFollowers<br />
+
+      <button>update</button>
     </form>
 
     <script src="popup.js"></script>
-</body>
+  </body>
+</html>

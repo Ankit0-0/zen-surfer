@@ -1,45 +1,56 @@
+let blockedSites = [];
+let redirectUrl = "https://www.google.com/";
+// Listen for tab updates
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  console.log("Tab updated: ", tab);
-  if (changeInfo.status === "complete" && tab.url) {
-    if (tab.url.includes("twitter.com")) {
-      console.log("Twitter detected!");
-      chrome.tabs.sendMessage(tabId, {
-        type: "ALERT",
-        url: changeInfo.url,
-      });
-    }
-    if (tab.url.includes("instagram.com")) {
-      console.log("instagram detected!");
-      chrome.tabs.sendMessage(tabId, {
-        type: "ALERT",
-        url: changeInfo.url,
-      });
-    }
+  // Check if the URL change is complete and not due to a frame creation
+  if (
+    changeInfo.url &&
+    // changeInfo.status === "complete" &&
+    tab.url === changeInfo.url
+  ) {
+    // Check if the tab URL matches any blocked site
+    checkBlockedSites(tabId, changeInfo.url);
   }
 });
 
+// Listen for web navigation before a page loads
+// chrome.webNavigation.onBeforeNavigate.addListener((details) => {
+//   // Check if the URL about to be loaded matches any blocked site
+//   checkBlockedSites(details.tabId, details.url);
+// });
+
+// Function to check if the URL matches any blocked site and send a redirect message
+const checkBlockedSites = (tabId, url) => {
+  chrome.storage.sync.get("blockedSites", (data) => {
+    blockedSites = data.blockedSites || []; // Initialize with an empty array if data is undefined
+    
+    // Get the redirection URL from Chrome storage
+    chrome.storage.sync.get("redirectionUrl", (data) => {
+      redirectUrl =
+        data.redirectionUrl != null
+          ? data.redirectionUrl
+          : "https://www.google.com/";
+    });
+
+    if (blockedSites.some((site) => url.includes(site))) {
+      console.log("Redirecting");
+      chrome.tabs.update(tabId, { url: redirectUrl });
+    }
+  });
+};
+
+// Listen for messages from content scripts
 chrome.runtime.onMessage.addListener((message, sender, response) => {
   if (message.type === "BLOCK_SITES") {
-    const blockedSites = message.sites;
+    const { sites, redirectionUrl } = message;
+    // Update the list of blocked sites in Chrome storage
+    chrome.storage.sync.set({ blockedSites: sites }, () => {
+      console.log("Blocked sites: ", sites);
+    });
 
-    chrome.storage.sync.set({ blockedSites: blockedSites }, () => {
-      console.log("Blocked sites: ", blockedSites);
+    // Update the redirection URL in Chrome storage
+    chrome.storage.sync.set({ redirectionUrl }, () => {
+      console.log("Redirection URL: ", redirectionUrl);
     });
   }
 });
-
-
-
-// chrome.runtime.onMessage.addListener((message, sender, response) => {
-//   if (message.type === "TIME_UP") {
-//     // Trigger a popup to inform the user that the time is up
-//     chrome.windows.create({
-//       url: "popup.html",
-//       type: "popup",
-//       width: 400,
-//       height: 200,
-//       top: 100,
-//       left: 100,
-//     });
-//   }
-// });

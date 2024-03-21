@@ -2,11 +2,11 @@
   "name": "zen surfer",
   "version": "1.0.0",
   "manifest_version": 3,
-  "description": "A simple script to help you relax and focus",
+  "description": "A simple script to help you relax and focus", 
   "action": {
     "default_popup": "popup.html"
   },
-  "permissions": ["storage", "scripting"],
+  "permissions": ["storage", "scripting", "webNavigation"],
   "host_permissions": ["http://*/*", "https://*/*"],
   "background": {
     "service_worker": "service_worker.js"

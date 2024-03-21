@@ -1,4 +1,4 @@
-<h1>&#128308 the application is still under development, please wait till first release &#128308</h1>
+<h1>&#128308Application in development. Wait for the first release.&#128308</h1>
 # Zen Surfer Chrome Extension
 
 Zen Surfer is a Chrome extension designed to help users stay focused and reduce distractions by blocking access to selected websites. With Zen Surfer, users can choose which sites they want to block completely and be redirected to Google.com whenever they try to access those sites.

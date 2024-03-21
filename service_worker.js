@@ -4,9 +4,10 @@ let redirectUrl = "https://www.google.com/";
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   // Check if the URL change is complete and not due to a frame creation
   if (
-    changeInfo.url &&
+    1
+    // changeInfo.url 
     // changeInfo.status === "complete" &&
-    tab.url === changeInfo.url
+    // tab.url === changeInfo.url
   ) {
     // Check if the tab URL matches any blocked site
     checkBlockedSites(tabId, changeInfo.url);

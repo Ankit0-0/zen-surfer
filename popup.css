@@ -22,6 +22,11 @@ h1 {
   margin: 5px;
 }
 
+#info {
+  font-size: 12px;
+  color: #eee5e5;
+}
+
 p {
   margin-bottom: 10px;
 }
@@ -31,13 +36,13 @@ input[type="checkbox"] {
 }
 
 input[type="text"] {
-    width: 100%;
-    padding: 6px 6px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 6px 6px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 
 button[type="submit"] {

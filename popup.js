@@ -1,35 +1,31 @@
 let blockedSites = [];
 let redirectionUrl = "";
 
-// Function to get blocked sites and redirection URL from Chrome Storage
-const updateBlockedSitesAndRedirectionUrl = () => {
-  chrome.storage.sync.get(["blockedSites", "redirectionUrl"], (data) => {
-    blockedSites = data.blockedSites || [];
-    redirectionUrl = data.redirectionUrl || "";
-    console.log("Blocked sites: ", blockedSites);
-    console.log("Redirection URL: ", redirectionUrl);
-    // After retrieving the blocked sites and redirection URL, update the checkboxes and input field
-    updateUI();
-  });
-};
-
+let blockedInstagramItems = [];
+ 
 // Function to update checkboxes and input field based on blocked sites and redirection URL
 const updateUI = () => {
   // Update checkboxes
-  const checkboxes = document.querySelectorAll('input[name="site"]');
-  checkboxes.forEach((checkbox) => {
+  const sitesCheckboxes = document.querySelectorAll('input[name="site"]');
+  sitesCheckboxes.forEach((checkbox) => {
     checkbox.checked = blockedSites.includes(checkbox.value);
   });
 
   // Update input field with redirection URL
   const redirectionUrlInput = document.getElementById("redirectionUrl");
   redirectionUrlInput.value = redirectionUrl;
+
+  const instaCheckBoxes = document.querySelectorAll('input[name="instaItem"]')
+
+  instaCheckBoxes.forEach((checkbox) => {
+    checkbox.checked = blockedInstagramItems.includes(checkbox.value);
+  })
 };
 
-document.addEventListener("DOMContentLoaded", () => {
+const handleBlockedSites = () => {
   const blockForm = document.getElementById("blockForm");
 
-  blockForm.addEventListener("submit", function (event) {
+  blockForm.addEventListener("submit",  (event) => {
     event.preventDefault(); // Prevent the default form submission
 
     // Get the redirection URL from the input field
@@ -52,10 +48,10 @@ document.addEventListener("DOMContentLoaded", () => {
     chrome.runtime.sendMessage({
       type: "BLOCK_SITES",
       sites: sitesToBeBlocked,
-      redirectionUrl: redirectionUrl
+      redirectionUrl: redirectionUrl,
     });
 
-    const blockButton = document.getElementById("blockButton");
+    const blockButton = document.getElementById("blockSitesButton");
 
     blockButton.innerText = "✔️"; // Change button text to tick sign
     setTimeout(() => {
@@ -66,6 +62,60 @@ document.addEventListener("DOMContentLoaded", () => {
     // blockForm.reset();
   });
 
-  // Call updateBlockedSitesAndRedirectionUrl when the popup is opened
-  updateBlockedSitesAndRedirectionUrl();
+  // get blocked sites and redirection URL from Chrome Storage
+  chrome.storage.sync.get(["blockedSites", "redirectionUrl"], (data) => { 
+    blockedSites = data.blockedSites || [];
+    redirectionUrl = data.redirectionUrl || "";
+    console.log("Blocked sites: ", blockedSites);
+    console.log("Redirection URL: ", redirectionUrl);
+    // After retrieving the blocked sites and redirection URL, update the checkboxes and input field
+    updateUI();
+  });
+};
+
+const handleInstagramItems = () => {
+  const instagramForm = document.getElementById("instagramForm")
+  
+  instagramForm.addEventListener("submit", (event) => {
+    event.preventDefault(); // Prevent the default form submission
+    
+    // Get all checked checkboxes
+    let itemsToBeBlocked = [];
+    const checkboxes = document.querySelectorAll(
+      'input[name="instaItem"]:checked'
+      );
+      checkboxes.forEach((checkbox) => {
+        itemsToBeBlocked.push(checkbox.value); // Add the value of checked checkbox to the array
+      });
+      
+    chrome.runtime.sendMessage({
+      type: "BLOCK_INSTAGRAM_ITEMS",
+      items: itemsToBeBlocked,
+    });
+
+    const blockButton = document.getElementById("blockInstaButton");
+
+    blockButton.innerText = "✔️"; // Change button text to tick sign
+    setTimeout(() => {
+      blockButton.innerText = "update"; // Change button text back to "Block"
+    }, 1000); // 1000 milliseconds = 1 second
+    // Reset the form
+    // instagramForm.reset();
+
+  });
+
+  
+
+  chrome.storage.sync.get("blockedInstagramItems", (data) => {
+    blockedInstagramItems = data.blockedInstagramItems || [];
+    console.log("Blocked Instagram items: ", blockedInstagramItems);
+  })
+
+  updateUI()
+};
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  handleInstagramItems()
+  handleBlockedSites();
 });

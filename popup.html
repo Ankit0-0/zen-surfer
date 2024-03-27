@@ -16,35 +16,39 @@
       <input type="checkbox" name="site" value="reddit" /> Reddit<br />
       <br />
       <label for="redirectionUrl">Set distraction redirection URL:</label>
+      <span id="info">&#9432;</span>
       <input type="text" name="redirectionUrl" id="redirectionUrl" required />
       <br />
 
       <label>Other sites to be blocked(optional): </label>
-      <input type="text" name="otherSites" id="otherSites"/>
-      <button id="blockButton" type="submit">update</button>
+      <input type="text" name="otherSites" id="otherSites" />
+      <button id="blockSitesButton" type="submit">update</button>
     </form>
 
-    <form action="" id="" class="form">
+    <form id="instagramForm" class="form">
       <p>block specific instagram features</p>
-      <input type="checkbox"  value="reels" /> reels<br />
-      <input type="checkbox"  value="explore" /> explore<br />
-      <input type="checkbox"  value="stories" /> stories<br />
-      <input type="checkbox"  value="feed" /> feed<br />
-      <input type="checkbox"  value="suggestFollowers" />suggestFollowers<br />
+      <input type="checkbox" name="instaItem" value="reels" /> reels<br />
+      <input type="checkbox" name="instaItem" value="explore" /> explore<br />
+      <input type="checkbox" name="instaItem" value="stories" /> stories<br />
+      <input type="checkbox" name="instaItem" value="feed" /> feed<br />
+      <input
+        type="checkbox"
+        name="instaItem"
+        value="suggestFollowers"
+      />suggestFollowers<br />
 
-
-      <button type="submit" >update</button>
+      <button id="blockInstaButton" type="submit">update</button>
     </form>
 
     <form action="" id="" class="form">
       <p>block specific youtube features</p>
-      <input type="checkbox"  value="shorts" /> shorts<br />
-      <input type="checkbox"  value="homeFeed" /> home feed<br />
-      <input type="checkbox"  value="suggestions" /> suggestions<br />
-      <input type="checkbox"  value="trending" /> trending<br />
-      <input type="checkbox"  value="subscriptions" /> subscriptions<br />
-      <input type="checkbox"  value="comments" /> comments<br />
-      <input type="checkbox"  value="search" /> search<br />
+      <input type="checkbox" value="shorts" /> shorts<br />
+      <input type="checkbox" value="homeFeed" /> home feed<br />
+      <input type="checkbox" value="suggestions" /> suggestions<br />
+      <input type="checkbox" value="trending" /> trending<br />
+      <input type="checkbox" value="subscriptions" /> subscriptions<br />
+      <input type="checkbox" value="comments" /> comments<br />
+      <input type="checkbox" value="search" /> search<br />
 
       <button type="submit">update</button>
     </form>

@@ -1,5 +1,5 @@
 <h1>&#128308Application in development. Wait for the first release.&#128308</h1>
-# Zen Surfer Chrome Extension
+## Zen Surfer Chrome Extension
 
 Zen Surfer is a Chrome extension designed to help users stay focused and reduce distractions by blocking access to selected websites. With Zen Surfer, users can choose which sites they want to block completely and be redirected to Google.com whenever they try to access those sites.
 
@@ -13,10 +13,16 @@ Zen Surfer is a Chrome extension designed to help users stay focused and reduce 
 
 To install Zen Surfer, follow these steps:
 
-1. Download the extension files from the repository.
-2. Open Google Chrome and go to `chrome://extensions`.
-3. Enable "Developer mode" by toggling the switch in the top right corner.
-4. Click on "Load unpacked" and select the folder containing the extension files.
+
+1. **Download the Extension**: Clone or download the Zen Surfer repository from [GitHub](https://github.com/Ankit0-0/zen-surfer). If you download the repository as a ZIP file, make sure to extract its contents before proceeding.
+
+2. **Open Chrome Extensions**: Open Google Chrome and go to `chrome://extensions/`.
+
+3. **Enable Developer Mode**: Toggle the switch in the top right corner to enable Developer mode.
+
+4. **Load the Extension**: Click on the "Load unpacked" button and select the directory where you cloned or downloaded the Zen Surfer extension.
+
+5. **Extension Added**: Zen Surfer should now be visible in your Chrome toolbar.
 
 ## Usage
 

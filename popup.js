@@ -2,7 +2,8 @@ let blockedSites = [];
 let redirectionUrl = "";
 
 let blockedInstagramItems = [];
- 
+let blockedYoutubeItems = [];
+
 // Function to update checkboxes and input field based on blocked sites and redirection URL
 const updateUI = () => {
   // Update checkboxes
@@ -15,17 +16,25 @@ const updateUI = () => {
   const redirectionUrlInput = document.getElementById("redirectionUrl");
   redirectionUrlInput.value = redirectionUrl;
 
-  const instaCheckBoxes = document.querySelectorAll('input[name="instaItem"]')
+  const instaCheckBoxes = document.querySelectorAll('input[name="instaItem"]');
 
   instaCheckBoxes.forEach((checkbox) => {
     checkbox.checked = blockedInstagramItems.includes(checkbox.value);
-  })
+  });
+
+  const youtubeCheckBoxes = document.querySelectorAll(
+    'input[name="youtubeItem"]'
+  );
+
+  youtubeCheckBoxes.forEach((checkbox) => {
+    checkbox.checked = blockedYoutubeItems.includes(checkbox.value);
+  });
 };
 
 const handleBlockedSites = () => {
   const blockForm = document.getElementById("blockForm");
 
-  blockForm.addEventListener("submit",  (event) => {
+  blockForm.addEventListener("submit", (event) => {
     event.preventDefault(); // Prevent the default form submission
 
     // Get the redirection URL from the input field
@@ -63,7 +72,7 @@ const handleBlockedSites = () => {
   });
 
   // get blocked sites and redirection URL from Chrome Storage
-  chrome.storage.sync.get(["blockedSites", "redirectionUrl"], (data) => { 
+  chrome.storage.sync.get(["blockedSites", "redirectionUrl"], (data) => {
     blockedSites = data.blockedSites || [];
     redirectionUrl = data.redirectionUrl || "";
     console.log("Blocked sites: ", blockedSites);
@@ -74,23 +83,23 @@ const handleBlockedSites = () => {
 };
 
 const handleInstagramItems = () => {
-  const instagramForm = document.getElementById("instagramForm")
-  
+  const instagramForm = document.getElementById("instagramForm");
+
   instagramForm.addEventListener("submit", (event) => {
     event.preventDefault(); // Prevent the default form submission
-    
+
     // Get all checked checkboxes
     let itemsToBeBlocked = [];
     const checkboxes = document.querySelectorAll(
       'input[name="instaItem"]:checked'
-      );
-      checkboxes.forEach((checkbox) => {
-        itemsToBeBlocked.push(checkbox.value); // Add the value of checked checkbox to the array
-      });
-      
+    );
+    checkboxes.forEach((checkbox) => {
+      itemsToBeBlocked.push(checkbox.value); // Add the value of checked checkbox to the array
+    });
+
     chrome.runtime.sendMessage({
       type: "BLOCK_INSTAGRAM_ITEMS",
-      items: itemsToBeBlocked,
+      instaItems: itemsToBeBlocked,
     });
 
     const blockButton = document.getElementById("blockInstaButton");
@@ -101,21 +110,56 @@ const handleInstagramItems = () => {
     }, 1000); // 1000 milliseconds = 1 second
     // Reset the form
     // instagramForm.reset();
-
   });
-
-  
 
   chrome.storage.sync.get("blockedInstagramItems", (data) => {
     blockedInstagramItems = data.blockedInstagramItems || [];
     console.log("Blocked Instagram items: ", blockedInstagramItems);
-  })
+  });
 
-  updateUI()
+  updateUI();
 };
 
+const handleYoutubeItems = () => {
+  const youtubeForm = document.getElementById("youtubeForm");
+
+  youtubeForm.addEventListener("submit", (event) => {
+    event.preventDefault(); // Prevent the default form submission
+
+    // Get all checked checkboxes
+    let itemsToBeBlocked = [];
+    const checkboxes = document.querySelectorAll(
+      'input[name="youtubeItem"]:checked'
+    );
+    checkboxes.forEach((checkbox) => {
+      itemsToBeBlocked.push(checkbox.value); // Add the value of checked checkbox to the array
+    });
+
+    chrome.runtime.sendMessage({
+      type: "BLOCK_YOUTUBE_ITEMS",
+      youtubeItems: itemsToBeBlocked,
+    });
+
+    const blockButton = document.getElementById("blockYoutubeButton");
+
+    blockButton.innerText = "✔️"; // Change button text to tick sign
+    setTimeout(() => {
+      blockButton.innerText = "update"; // Change button text back to "Block"
+    }, 1000); // 1000 milliseconds = 1 second
+    // Reset the form
+    // youtubeForm.reset();
+  });
+
+  chrome.storage.sync.get("blockedYoutubeItems", (data) => {
+    blockedYoutubeItems = data.blockedYoutubeItems || [];
+    console.log("Blocked Youtube items: ", blockedYoutubeItems);
+  });
+
+  updateUI();
+};
 
 document.addEventListener("DOMContentLoaded", () => {
-  handleInstagramItems()
+  handleInstagramItems();
   handleBlockedSites();
+  handleYoutubeItems()
 });

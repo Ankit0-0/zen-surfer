@@ -14,32 +14,31 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   //   // Check if the tab URL matches any blocked site
   //   checkBlockedSites(tabId, changeInfo.url);
   // }
-  checkBlockedSites(tabId, changeInfo.url)
+  checkBlockedSites(tabId, changeInfo.url);
 });
 
 // Function to check if the URL matches any blocked site and send a redirect message
 const checkBlockedSites = (tabId, url) => {
   chrome.storage.sync.get("blockedSites", (data) => {
     blockedSites = data.blockedSites || []; // Initialize with an empty array if data is undefined
-
-    if (blockedSites.length === 0) return; // Exit if the blocked sites array is empty
-
-    // Get the redirection URL from Chrome storage
-    chrome.storage.sync.get("redirectionUrl", (data) => {
-      redirectUrl =
-        data.redirectionUrl != null
-          ? data.redirectionUrl
-          : "https://www.google.com/";
-    });
-
-    const blockedSitesRegex = new RegExp(blockedSites.join("|"), "i"); // Create a regex pattern from the blocked sites array
-
-    if (blockedSitesRegex.test(url)) {
-      // Check if the URL matches any blocked site
-      console.log("Redirecting");
-      chrome.tabs.update(tabId, { url: redirectUrl });
-    }
   });
+  if (blockedSites.length === 0) return; // Exit if the blocked sites array is empty
+
+  // Get the redirection URL from Chrome storage
+  chrome.storage.sync.get("redirectionUrl", (data) => {
+    redirectUrl =
+      data.redirectionUrl != null
+        ? data.redirectionUrl
+        : "https://www.google.com/";
+  });
+
+  const blockedSitesRegex = new RegExp(blockedSites.join("|"), "i"); // Create a regex pattern from the blocked sites array
+
+  if (blockedSitesRegex.test(url)) {
+    // Check if the URL matches any blocked site
+    console.log("Redirecting");
+    chrome.tabs.update(tabId, { url: redirectUrl });
+  }
 };
 
 // Listen for messages from content scripts

@@ -1,54 +1,105 @@
-// let blockedInstagramItems = [];
+const selectors = {
+  feed: "[role=main]",
+  stories: "div[role='menu']",
+  posts: "article",
+  postsLoader: "[data-visualcompletion='loading-state']",
+  suggestedFollowers: "a[href*='/explore/people/']",
+  activity: "a[href*='/accounts/activity']",
+  explore: "a[href='/explore/']",
+  reels: "a[href*='/reels/']",
+  inbox: "a[href='/direct/inbox/']",
+  search: "svg[aria-label='Search']",
+  notifications: "svg[aria-label='Notifications']",
+  profile: "a[href*='/photosi14']",
+};
 
-// const defaultOptions = {
-//   blockReels: true,
-//   blockExplore: true,
-//   blockStories: false,
-//   blockPosts: false,
-//   blockSuggestedFollowers: true,
-//   blockForYouFeed: false,
-// };
+const urls = {
+  base: "/",
+  stories: "/stories",
+  reels: "/reels",
+  explore: "/explore",
+};
 
-// const labelsArray = Object.keys(defaultOptions);
+let blockedItems = [];
 
-// const selectors = {
-//   main: "[role=main]",
-//   storyFeed: "div[role='menu']",
-//   posts: "article",
-//   postsLoader: "[data-visualcompletion='loading-state']",
-//   suggestedFollowers: "a[href*='/explore/people/']",
-//   nav: {
-//     direct: "a[href*='/direct/inbox/']",
-//     activity: "a[href*='/accounts/activity']",
-//     explore: "a[href='/explore/']",
-//     reels: "a[href*='/reels/']",
-//   },
-// };
+async function main() {
+  const mutationObserver = new MutationObserver(onMutation);
 
-// const urls = {
-//   base: "/",
-//   stories: "/stories",
-//   reels: "/reels",
-//   explore: "/explore",
-// };
+  chrome.storage.sync.get("blockedInstagramItems", (result) => {
+    blockedItems = result.blockedInstagramItems || [];
+    console.log("Blocked Instagram items: ", blockedItems);
+  });
 
-// document.addEventListener("DOMContentLoaded", async () => {
-//   //   const reelsButton = document.querySelector(selectors.nav.reels);
-//   //   console.log("Reels button found: ", reelsButton);
+  function onMutation() {
+    // console.log("Mutation detected");
+    const body = document.body;
 
-//   //   if (reelsButton) {
-//   //     console.log("Reels button removed");
-//   //     reelsButton?.remove();
-//   //   }
+    if (blockedItems.includes("homeFeed") && blockedItems.includes("stories")) {
+      const feed = body?.querySelector(selectors.feed);
+      feed?.remove();
+    }
 
-//   await chrome.storage.sync.get("blockedInstagramItems", (data) => {
-//     blockedInstagramItems = data.blockedInstagramItems || [];
-//   });
+    if (blockedItems.includes("reels")) {
+      const reelsLink = body?.querySelector(selectors.reels);
+      reelsLink?.remove();
+    }
 
-//   console.log("Blocked Instagram items: ", blockedInstagramItems);
+    if (blockedItems.includes("explore")) {
+      const exploreLink = body?.querySelector(selectors.explore);
+      exploreLink?.remove();
+    }
 
+    if (blockedItems.includes("stories")) {
+      const stories = body?.querySelector(selectors.stories);
+      stories?.remove();
+    }
 
-//   blockedInstagramItems.forEach((item) => {
-    
-//   })
-// });
+    if (blockedItems.includes("homeFeed")) {
+      const feed = body?.querySelector(selectors.posts);
+      feed?.remove();
+      const postsLoader = body?.querySelector(selectors.postsLoader);
+      postsLoader?.remove();
+    }
+
+    if (blockedItems.includes("inbox")) {
+      const directLink = body?.querySelector(selectors.inbox);
+      directLink?.remove();
+    }
+
+    // if (blockedItems.includes("search")) {
+    //   const search = body?.querySelector(selectors.search).closest('a')
+    //   search?.remove();
+    // }
+
+    // if (blockedItems.includes("notifications")) {
+    //   const notificationsLink = body?.querySelector(selectors.notifications).closest('a');
+    //   notificationsLink?.remove();
+    // }
+
+    if (blockedItems.includes("profile")) {
+      const profileLink = body?.querySelector(selectors.profile);
+      profileLink?.remove();
+    }
+
+    if (blockedItems.includes("suggestedFollowers")) {
+      // Remove suggested followers
+      const suggestedFollowersLink = body?.querySelector(
+        selectors.suggestedFollowers
+      );
+      const suggestedFollowersTitle = suggestedFollowersLink?.closest("div");
+      const suggestedFollowers = suggestedFollowersTitle?.nextElementSibling;
+      suggestedFollowersTitle?.remove();
+      suggestedFollowers?.remove();
+    }
+  }
+
+  // Start observing the DOM for changes
+  mutationObserver.observe(document, {
+    subtree: true,
+    childList: true,
+  });
+
+  onMutation([{ addedNodes: [document.documentElement] }]);
+}
+
+main();

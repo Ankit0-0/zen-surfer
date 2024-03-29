@@ -11,7 +11,6 @@
       <span>time</span>
       <span>music</span>
     </div>
-
     <form id="blockForm" class="containers">
       <p>Select sites you want to block completely:</p>
       <input type="checkbox" name="site" value="instagram" /> Instagram<br />
@@ -28,6 +27,27 @@
       <label>Other sites to be blocked(optional): </label>
       <input type="text" name="otherSites" id="otherSites" />
       <button id="blockSitesButton" type="submit">update</button>
+    </form>
+
+    <form id="instagramForm" class="containers">
+      <p>block specific instagram features</p>
+      <input type="checkbox" name="instaItem" value="reels" /> reels<br />
+      <input type="checkbox" name="instaItem" value="explore" /> explore<br />
+      <input type="checkbox" name="instaItem" value="stories" /> stories<br />
+      <input type="checkbox" name="instaItem" value="search" /> search<br />
+      <input type="checkbox" name="instaItem" value="profile" /> profile<br />
+      <input type="checkbox" name="instaItem" value="inbox" /> inbox<br />
+      <input type="checkbox" name="instaItem" value="notifications" />
+      notifications<br />
+
+      <input type="checkbox" name="instaItem" value="homeFeed" /> home page<br />
+      <input
+        type="checkbox"
+        name="instaItem"
+        value="suggestedFollowers"
+      />suggested Followers<br />
+
+      <button id="blockInstaButton" type="submit">update</button>
     </form>
 
     <form id="youtubeForm" class="containers">
